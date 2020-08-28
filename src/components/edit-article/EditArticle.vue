@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1>{{ mode }} Article</h1>
+    <h2>{{ mode }} Article</h2>
     <!-- add a submit listener on the form, when the form submits, vue will handle it with the specified method 'checkForm', it will also suppress the default submit behaviour of a form (sending a request and reloading the page) -->
     <form v-on:submit.prevent="checkForm">
       <div class="errors">
@@ -79,6 +79,7 @@ export default {
         }
       }
       // finally, a set of if statements determine which, if any, inputs aren't filled out and add the corresponding error message to the array of error messages in the data object
+      this.errors = [];
       if (!this.article.title) {
         this.errors.push("Title Required");
       }
