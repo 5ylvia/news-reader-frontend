@@ -75,11 +75,17 @@ export default {
         registerUser: function(user) {
             this.$http.post(`${process.env.VUE_APP_API_URL}users/register`, user)
             .then((response) => {
-                console.log(response)
-            },
-            (response) => {
-                console.log(response)
-            })
+            if (response.body) {
+              localStorage.loggedIn = true;
+              localStorage.user = user.email;
+              this.$emit("$loggedIn", true);
+              this.$router.push({ path: "/" });
+            }
+          },
+          (response) => {
+            this.errors.push(response.body.message);
+          }
+        )
         }
     }
 };

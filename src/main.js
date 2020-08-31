@@ -7,6 +7,7 @@ import ArticleDetails from './components/article-details/ArticleDetails.vue'
 import EditArticle from './components/edit-article/EditArticle.vue'
 import Register from './components/register/Register.vue'
 import Login from './components/login/Login.vue'
+import MyArticles from './components/my-articles/MyArticles.vue'
 
 import VueResource from "vue-resource";
 
@@ -43,6 +44,10 @@ const routes = [
   {
     path: '/login',
     component: Login
+  },
+  {
+    path: '/my-articles',
+    component: MyArticles
   }
 ];
 

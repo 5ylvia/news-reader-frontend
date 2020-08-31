@@ -4,6 +4,7 @@
     <router-link v-bind:to="'/'">Home</router-link>
     <router-link v-bind:to="'/about'">About</router-link>
     <router-link v-bind:to="'/register'">Register</router-link>
+    <router-link v-bind:to="'/my-articles'" v-if="loggedIn === 'yes'">My Articles</router-link>
     <a href="#" v-if="loggedIn === 'yes'" @click.prevent="setLoggedOut">Log Out</a>
     <router-link v-else v-bind:to="'/login'">Log In</router-link>
     <p v-if="loggedIn === 'yes'" >Hello: {{ userEmail }}</p>
@@ -25,7 +26,8 @@ export default {
   },
   methods: {
     setLoggedOut: function() {
-      localStorage.loggedIn = "no"
+      localStorage.clear();
+      localStorage.loggedIn = "no";
       localStorage.userEmail = null;
       EventBus.$emit("$userLogged");
       this.$router.push({ path:'/login' })
