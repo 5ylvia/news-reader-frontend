@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1>{{mode}} Article</h1>
+    <h2>{{ mode }} Article</h2>
     <!-- add a submit listener on the form, when the form submits, vue will handle it with the specified method 'checkForm', it will also suppress the default submit behaviour of a form (sending a request and reloading the page) -->
     <form v-on:submit.prevent="checkForm">
       <div class="errors">
@@ -96,7 +96,10 @@ export default {
     createArticle: function (article) {
       console.log(article);
       this.$http
-        .post(`${process.env.VUE_APP_API_URL}articles`, article)
+        .post(
+          `${process.env.VUE_APP_API_URL}users/${localStorage.userId}/articles`,
+          article
+        )
         .then(function () {
           // upon receiving confirmation from the api, it then commands the vue router to go to the home view
           this.$router.push({ path: "/" });

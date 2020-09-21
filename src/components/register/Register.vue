@@ -1,24 +1,25 @@
 <template>
   <div>
     <h2>Register New User</h2>
-
     <form @submit.prevent="checkForm">
       <div v-if="errors.length">
         <p>
           <b>Please correct the following errors:</b>
         </p>
         <ul>
-          <li v-for="(error, index) in errors" :key="index">{{error}}</li>
+          <li v-for="(error, i) in errors" :key="i">
+            <p>{{ error }}</p>
+          </li>
         </ul>
       </div>
 
       <div>
         <div>
-          <label for="firstname">First Name</label>
+          <label for="firstname">First name</label>
           <input v-model="user.firstname" type="text" id="firstname" name="firstname" />
         </div>
         <div>
-          <label for="lastname">Last Name</label>
+          <label for="lastname">Lastname</label>
           <input v-model="user.lastname" type="text" id="lastname" name="lastname" />
         </div>
         <div>
@@ -27,7 +28,7 @@
         </div>
         <div>
           <label for="email">Email</label>
-          <input v-model="user.email" type="text" id="email" name="email" />
+          <input v-model="user.email" type="email" id="email" name="email" />
         </div>
         <div>
           <input type="submit" value="Register" />
@@ -41,53 +42,56 @@
 export default {
   name: "Register",
 
-  data: function() {
+  data: function () {
     return {
       errors: [],
       user: {
         firstname: "",
         lastname: "",
         username: "",
-        email: ""
-      }
+        email: "",
+      },
     };
   },
 
   methods: {
-    checkForm: function(event) {
+    checkForm: function (event) {
       event.preventDefault();
       this.errors = [];
       if (!this.user.firstname) {
-        this.errors.push("First name required!");
+        this.errors.push("Firstname Required");
       }
       if (!this.user.lastname) {
-        this.errors.push("Last name required!");
+        this.errors.push("Lastname Required");
       }
       if (!this.user.username) {
-        this.errors.push("Username required!");
+        this.errors.push("Username Required");
       }
       if (!this.user.email) {
-        this.errors.push("Email required!");
+        this.errors.push("Email Required");
       }
-
       if (!this.errors.length) {
         this.registerUser(this.user);
       }
     },
-
-    registerUser: function(user) {
+    registerUser: function (user) {
       this.$http
         .post(`${process.env.VUE_APP_API_URL}users/register`, user)
         .then(
-          response => {
-            console.log(response);
+          (response) => {
+            if (response.body) {
+              localStorage.loggedIn = true;
+              localStorage.user = user.email;
+              this.$emit("$loggedIn", true);
+              this.$router.push({ path: "/" });
+            }
           },
-          response => {
-              console.log(response)
+          (response) => {
+            this.errors.push(response.body.message);
           }
         );
-    }
-  }
+    },
+  },
 };
 </script>
 
